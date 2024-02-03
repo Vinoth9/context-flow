@@ -1,0 +1,103 @@
+//create context flow
+details.json:
+
+    {"array:[{
+     "id":1,
+     "name:"Apple",
+     "brand:"Fresho"
+     "kg_1":"$200"
+     },
+     {
+     "id":2,
+     "name:"Orange",
+     "brand:"Fresho"
+     "kg_1":"$200"
+     },
+     {
+     "id":3,
+     "name:"Kiwi",
+     "brand:"Fresho"
+     "kg_1":"$200"
+     }
+]"}
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Context.js:
+
+	import {createContext} from 'react'
+	export const globalStateContext=createContext()
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Reducer.js:
+
+	import {details} from './details'
+	export const initialState={
+	arr:details.array
+	},
+
+	export const Reducer=(state,action)=>{
+	if(action.type==="updateName"){
+	return {...state,name=action.payload}
+	}
+	}
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Routing.js:
+ 
+	import React,{useReducer} from 'react'
+        import {BrowserRouter,Routes,Route} from 'react-router-dom'
+        import {initialState,Reducer} from './Context/Reducer'
+        import {globalStateContext} from './Context/Context'
+        import {Home} form './Home' 
+	import {Card} form './Card'
+        export const Routing=()=>{
+            const[state,dispatch]=useReducer(Reducer,initialState)
+            return(
+		
+		<globalStateContext.Provider value={{state,dispatch}}>
+                <BrowserRouter>
+		<Routes>
+		<Route path='/' element={<Home/>}></Route>
+                <Route path='/C' element={<Card/>}></Route>
+		<Routes>
+		<BrowserRouter>
+		</globalStateContext.Provider>
+		
+            )
+     
+
+        }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Home.js:
+	import React,{useContext} from 'react'
+	import {globalStateContext} from './Context/Context'
+	
+	export const Home=()=>{
+  	const{state,dispatch}=useContext(globalStateContext)
+        const UpdateName=()=>{
+        dispatch({type:"updateName",payload:"Bannana"})
+	}
+        return(
+	<div>
+        <h1>{state.name}</h1>
+        <button onClick={UpdateName}>UpdateName</button>
+	</div>
+        )
+	
+        }
+----------------------------------------------------------------------------------------------------------------------------------------------------
+App.js:
+
+	import {Routing} form './Routing'
+
+function App=(){
+	return(
+	<div>
+       	<Routing>
+	</dov>
+	)
+}
+
+default export App;
+	
+
+
+
+	
